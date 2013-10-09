@@ -86,7 +86,6 @@ while PlayGame:
 
     # Roll Dice and advance player
     roll=rollDice()
-    print roll[0]
 
     # Check to see if the player is in jail first
     if (Players[turn].inJail):
@@ -151,8 +150,8 @@ while PlayGame:
         if (board[pos].name == "Income Tax"):
             incomeTaxChoice=None
             while not incomeTaxChoice:
-                temp=str(raw_input("Choose to pay [a]10% of worth ("+Players[turn].worth+
-                                   ") or [b]pay $200: "))
+                temp=str(raw_input("Choose to pay [a]10% of worth ("+
+                                   str(Players[turn].worth)+") or [b]pay $200: "))
                 if(temp != 'a' or temp != 'b'):
                     print "Invalid Choice!"
                 elif(temp == 'a'):
@@ -177,6 +176,7 @@ while PlayGame:
             # Will add logic for cards later
 
         elif (board[pos].name == 'Free Parking'):
+            print "You collect $"+str(board[freeParking].value)
             Players[turn].worth+=board[freeParking].value
             board[freeParking].value=500
 
@@ -190,6 +190,9 @@ while PlayGame:
         elif (board[pos].name == 'Luxury Tax'):
             Players[turn].worth-=75 # Need to check player's worth
             board[freeParking].value+=75
+
+        elif (board[pos].name == 'Go'):
+            print "You landed on GO!"
 
         else: 
             print board[pos].owner
