@@ -5,8 +5,6 @@ from mono_module import *
 import random
 
 def makeBoard():
-    """Create the playing board and return an array of the spaces"""
-    # Open file and read in the properties
     propFile=open("textfiles/properties.txt",'r')
     lines=propFile.readlines()
     lines=lines[1:]
@@ -20,7 +18,7 @@ def makeBoard():
 
     # Define the board
     board=[Space('Go'),props[0],Space('Community Chest'),props[1],Space('Income Tax'),
-           props[21],props[2],Space('Chance'),props[3],props[4],Space('Jail'),props[5],
+           props[22],props[2],Space('Chance'),props[3],props[4],Space('Jail'),props[5],
            props[26],props[6],props[7],props[19],props[8],Space('Community Chest'),
            props[9],props[10],Space('Free Parking'),props[11],Space('Chance'),
            props[12],props[13],props[24],props[14],props[15],props[27],props[16],
