@@ -18,7 +18,7 @@ class Space:
     """Generic place for spaces"""
     def __init__(self,spaceName):
         self.name=spaceName
-        if (self.name is 'Free Parking'):
+        if (self.name == 'Free Parking'):
            self.value=500
 
 # Defining a class for the Properties
