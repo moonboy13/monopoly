@@ -12,6 +12,11 @@ class Player:
         self.space=0
         self.inJail=False
 
+class Space:
+    """Generic place for spaces"""
+    def __init__(self,spaceName):
+        self.name=spaceName
+
 # Defining a class for the Properties
 class Property:
     """Class Containing a Properties information"""
