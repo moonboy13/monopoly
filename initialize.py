@@ -41,7 +41,7 @@ def communityChest():
     return comChest
 
 
-def communityChest():
+def Chance():
     """Read in and return the chance deck"""
     chaFile=open("textfiles/chance.txt",'r')
     lines=chaFile.readlines()
