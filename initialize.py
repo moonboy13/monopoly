@@ -5,7 +5,7 @@ from mono_module import *
 
 def makeBoard():
     # Open file and read in the properties
-    propFile=open("properties.txt",'r')
+    propFile=open("textfiles/properties.txt",'r')
     lines=propFile.readlines()
     lines=lines[1:]
     props=[]
