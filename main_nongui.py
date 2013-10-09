@@ -9,6 +9,11 @@ import random
 
 ####
 
+# Intialize the board
+board=makeBoard()
+chance=Chance()
+comChest=communityChest()
+
 ####
 nPlayers = None
 while not nPlayers or nPlayers > 8:
