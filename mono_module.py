@@ -17,14 +17,14 @@ class Property:
     """Class Containing a Properties information"""
     def __init__(self,propertyName,propertyPrice,houseCost,propertyRent,propertyGroup,
                  morgageValue,oneHouse,twoHouse,threeHouse,fourHouse,hotelRent):
-        self.name=proptertyName
+        self.name=propertyName
         self.owner="Bank"
         self.cost=propertyPrice
         self.rent=propertyRent
         self.buildCost=houseCost
         self.nhouse=0
         self.hotel=False
-        self.group=propteryGroup
+        self.group=propertyGroup
         self.morgageval=morgageValue
         self.oneHouse=oneHouse
         self.twoHouse=twoHouse
