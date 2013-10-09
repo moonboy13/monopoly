@@ -26,6 +26,3 @@ def makeBoard():
            props[25],Space('Chance'),props[20],Space('Luxury Tax'),props[21]]
     return board
 
-junk=makeBoard() 
-for item in junk:
-    print item.name
