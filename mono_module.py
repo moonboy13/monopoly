@@ -11,11 +11,15 @@ class Player:
         self.properties=[]
         self.space=0
         self.inJail=False
+        self.jailCounter=0
+        self.position=0
 
 class Space:
     """Generic place for spaces"""
     def __init__(self,spaceName):
         self.name=spaceName
+        if (self.name is 'Free Parking'):
+           self.value=500
 
 # Defining a class for the Properties
 class Property:
