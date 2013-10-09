@@ -2,8 +2,10 @@
 # Stuff to run on startup
 
 from mono_module import *
+import random
 
 def makeBoard():
+    """Create the playing board and return an array of the spaces"""
     # Open file and read in the properties
     propFile=open("textfiles/properties.txt",'r')
     lines=propFile.readlines()
@@ -26,3 +28,27 @@ def makeBoard():
            props[25],Space('Chance'),props[20],Space('Luxury Tax'),props[21]]
     return board
 
+def communityChest():
+    """Read in and return the community chest deck"""
+    comFile=open("textfiles/community_chest.txt",'r')
+    lines=comFile.readlines()
+    comChest=list()
+    for line in lines:
+        line=line.strip()
+        comChest.append(line)
+
+    random.shuffle(comChest)
+    return comChest
+
+
+def communityChest():
+    """Read in and return the chance deck"""
+    chaFile=open("textfiles/chance.txt",'r')
+    lines=chaFile.readlines()
+    chance=list()
+    for line in lines:
+        line=line.strip()
+        chance.append(line)
+
+    random.shuffle(chance)
+    return chance
