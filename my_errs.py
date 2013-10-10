@@ -4,3 +4,6 @@
 class TooManyPlayers(Exception):
     def __init__(self,players):
         self.nplayers=str(players)
+
+class tooPoor(Exception):
+    pass
