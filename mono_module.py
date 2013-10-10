@@ -5,6 +5,7 @@
 class Player:
     """Class containing the Players information"""
     def __init__(self,playerName):
+        self.getOutFree=False
         self.player=playerName
         self.piece=""
         self.worth=2000
@@ -48,7 +49,15 @@ class Property:
         else:
             self.hotel=True
 
+# Function for dealing with options in jail
 def jailActions(player,turn,board,roll,freeParking):
+    # See if the player has a get out of jail free card
+    if(player.getOutFree):
+        use=str(raw_input("Use your get out of jail free card[Y/n]? "))
+        if(use == 'n'):
+            print "okay..."
+        else:
+            return turn 
     # See if player can pay to leave jail
     if(player.worth < 50):
         print "Too poor to post bail!"
@@ -66,7 +75,6 @@ def jailActions(player,turn,board,roll,freeParking):
                 print "You've served your time and can move again"
                 player.inJail=False
                 player.jailCounter=0
-                turn+=1
     else:
         # Check if they want to post bail
         bailAnswer=str(raw_input("Would you like to pay $50 bail[y/N]?"))
@@ -76,7 +84,6 @@ def jailActions(player,turn,board,roll,freeParking):
             player.worth-=50
             player.inJail=False
             player.jailCounter=0
-            turn+=1
         else:
             print "Trying your luck then"
             if (roll[1]):
@@ -91,9 +98,53 @@ def jailActions(player,turn,board,roll,freeParking):
                     print "You've served your time and can move again"
                     player.inJail=False
                     player.jailCounter=0
-                    turn+=1
 
 
 
 
     return turn
+
+# Actions for landing on the income tax space
+def incomeTaxActions(player,board,freeParking):
+    """Actions to perform if the player lands on income tax space"""
+    incomeTaxChoice=None
+    while not incomeTaxChoice:
+        temp=str(raw_input("Choose to pay [a]10% of worth ("+
+                           str(player.worth)+") or [b]pay $200: "))
+        if(temp == 'a'):
+            print "Paying 10%"
+            board[freeParking].value+=(0.1*player.worth)
+            player.worth-=(0.1*player.worth)
+            incomeTaxChoice='a'
+        else:
+            print "Paying $200"
+            board[freeParking].value+=200
+            player.worth-=200
+            incomeTaxChoice='b'
+
+# Function to deal with Community Chest cards
+def comChestLogic(card,player,board,freeParking,Jail):
+    print card # Debuggin
+    pieces=card.split()
+    # Take care of the easy situations first
+    if (len(pieces) == 2):
+        if(pieces[0] == "collect"):
+            player.worth+=pieces[1]
+        elif(pieces[0] == "pay"):
+            board[freeParking]+=pieces[1]
+            try:
+                if (player.worth < pieces[1]):
+                    raise tooPoor
+
+                player.worth-=pieces[1]
+            except tooPoor:
+                print need to do stuff if poor 
+    elif(card == "get out of jail free")
+        player.getOutFree=True
+    elif(pieces[0] == "advance"):
+        if (pieces[3] == "Go"):
+            player.position=0
+            player.worth+=200
+        else:
+            player.position=Jail
+            player.inJail=True
