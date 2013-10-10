@@ -90,50 +90,7 @@ while PlayGame:
     # Check to see if the player is in jail first
     if (Players[turn].inJail):
         print "You are in Jail!!"
-        # See if player can pay to leave jail
-        if(Players[turn].worth < 50):
-            print "Too poor to post bail!"
-            # If they can't then see if they rolled doubles
-            if (roll[1]):
-                print "You rolled doubles!"
-                Players[turn].inJail=False
-                Players[turn].jailCounter=0
-                turn+=1
-            else:
-                print "No luck!"
-                Playerso[turn].jailCounter+=1
-                # They can leave if they've been in here three turns
-                if(Players[turn].jailCounter >= 3):
-                    print "You've served your time and can move again"
-                    Players[turn].inJail=False
-                    Players[turn].jailCounter=0
-        else:
-            # Check if they want to post bail
-            bailAnswer=str(raw_input("Would you like to pay $50 bail[y/N]?"))
-            if(bailAnswer.lower() == 'y'):
-                print "Payment recieved"
-                board[freeParking].value+=50
-                Players[turn].worth-=50
-                Players[turn].inJail=False
-                Players[turn].jailCounter=0
-            else:
-                print "Trying your luck then"
-                if (roll[1]):
-                    print "You rolled doubles!"
-                    Players[turn].inJail=False
-                    Players[turn].jailCounter=0
-                    turn+=1
-                else:
-                    print "No luck!"
-                    Players[turn].jailCounter+=1
-                    if(Players[turn].jailCounter >= 3):
-                        print "You've served your time and can move again"
-                        Players[turn].inJail=False
-                        Players[turn].jailCounter=0     
-
-
-
-           
+        turn=jailActions(Players[turn],turn,board,roll,freeParking)
     else:
         # Advance the player
         Players[turn].position+=roll[0]
@@ -152,9 +109,7 @@ while PlayGame:
             while not incomeTaxChoice:
                 temp=str(raw_input("Choose to pay [a]10% of worth ("+
                                    str(Players[turn].worth)+") or [b]pay $200: "))
-                if(temp != 'a' or temp != 'b'):
-                    print "Invalid Choice!"
-                elif(temp == 'a'):
+                if(temp == 'a'):
                     board[freeParking].value+=(0.1*Players[turn].worth)
                     Players[turn].worth-=(0.1*Players[turn].worth)
                     incomeTaxChoice='a'
@@ -206,7 +161,7 @@ while PlayGame:
         cntDoubles+=1
         if(cntDoubles >= 3):
             print "Going to jail for speeding!"
-            Player[turn].inJail=True
+            Players[turn].inJail=True
             turn+=1
             cntDoubles=0
 

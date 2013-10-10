@@ -14,6 +14,7 @@ class Player:
         self.jailCounter=0
         self.position=0
 
+# Generic class for spaces
 class Space:
     """Generic place for spaces"""
     def __init__(self,spaceName):
@@ -46,3 +47,53 @@ class Property:
             return "Must build 4 houses first"
         else:
             self.hotel=True
+
+def jailActions(player,turn,board,roll,freeParking):
+    # See if player can pay to leave jail
+    if(player.worth < 50):
+        print "Too poor to post bail!"
+        # If they can't then see if they rolled doubles
+        if (roll[1]):
+            print "You rolled doubles!"
+            player.inJail=False
+            player.jailCounter=0
+            turn+=1
+        else:
+            print "No luck!"
+            player.jailCounter+=1
+            # They can leave if they've been in here three turns
+            if(player.jailCounter >= 3):
+                print "You've served your time and can move again"
+                player.inJail=False
+                player.jailCounter=0
+                turn+=1
+    else:
+        # Check if they want to post bail
+        bailAnswer=str(raw_input("Would you like to pay $50 bail[y/N]?"))
+        if(bailAnswer.lower() == 'y'):
+            print "Payment recieved"
+            board[freeParking].value+=50
+            player.worth-=50
+            player.inJail=False
+            player.jailCounter=0
+            turn+=1
+        else:
+            print "Trying your luck then"
+            if (roll[1]):
+                print "You rolled doubles!"
+                player.inJail=False
+                player.jailCounter=0
+                turn+=1
+            else:
+                print "No luck!"
+                player.jailCounter+=1
+                if(player.jailCounter >= 3):
+                    print "You've served your time and can move again"
+                    player.inJail=False
+                    player.jailCounter=0
+                    turn+=1
+
+
+
+
+    return turn
