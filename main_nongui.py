@@ -5,11 +5,12 @@
 from mono_module import *
 from my_errs import *
 from initialize import *
-import random
+import random,time
 
 ####
 
 def rollDice():
+    random.seed(time.time()) # use sys time at time of roll to seed random
     a=random.randint(1,6)
     b=random.randint(1,6)
     if (a == b):
@@ -105,24 +106,13 @@ while PlayGame:
 
         # Actions for spaces that can be landed on
         if (board[pos].name == "Income Tax"):
-            incomeTaxChoice=None
-            while not incomeTaxChoice:
-                temp=str(raw_input("Choose to pay [a]10% of worth ("+
-                                   str(Players[turn].worth)+") or [b]pay $200: "))
-                if(temp == 'a'):
-                    board[freeParking].value+=(0.1*Players[turn].worth)
-                    Players[turn].worth-=(0.1*Players[turn].worth)
-                    incomeTaxChoice='a'
-                else:
-                    board[freeParking].value+=200
-                    Players[turn].worth-=200
-                    incomeTaxChoice='b'
-         
+            incomeTaxActions(Players[turn],board,freeParking) 
         elif (board[pos].name == 'Community Chest'):
             # Remove a card, then place it at the bottom
             comCard=comChest.pop(0)
             comChest.append(comCard)
             # Will add logic for cards later
+            comChestLogic(comCard,Players[turn],board,freeParking,Jail)
         
         elif (board[pos].name == 'Chance'):
             # Remove a card, then place it at the bottom
