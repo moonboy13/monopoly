@@ -71,6 +71,11 @@ for player in range(1,nPlayers+1):
     
     Players.append(cur)
 
+# Create a dictionary of players
+plyrDic={Players[0].player:Players[0]}
+for i in range(1,len(Players)-1):
+    plyrDic[Players[i].player]=Players[i]
+
 # Begin Playing the game
 print "Beginning the game!"
 PlayGame=True
