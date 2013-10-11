@@ -57,13 +57,11 @@ for player in range(1,nPlayers+1):
         if (not piece in validSet):
             piece=None
             print "Please enter a valid piece:"
-            for item in valid:
-                print item
+            print validSet
         elif(tokens[piece]):
             piece=None
             print "Piece is taken, please choose another:"
-            for item in valid:
-                print item
+            print validSet
         else:
             cur.piece=piece
             tokens[piece]=True
@@ -117,7 +115,7 @@ while PlayGame:
             comCard=comChest.pop(0)
             comChest.append(comCard)
             # Will add logic for cards later
-            comChestLogic(comCard,Players[turn],board,freeParking,Jail)
+            comChestLogic(comCard,Players[turn],board,freeParking,Jail,Players,plyrDic)
         
         elif (board[pos].name == 'Chance'):
             # Remove a card, then place it at the bottom
@@ -126,9 +124,9 @@ while PlayGame:
             # Will add logic for cards later
 
         elif (board[pos].name == 'Free Parking'):
-            print "You collect $"+str(board[freeParking].value)
-            Players[turn].worth+=board[freeParking].value
-            board[freeParking].value=500
+            print "You collect $"+str(board[freeParking].worth)
+            Players[turn].worth+=board[freeParking].worth
+            board[freeParking].worth=500
 
         elif (board[pos].name == 'Go To Jail'):
             Players[turn].position=jail
@@ -138,8 +136,13 @@ while PlayGame:
             print "Just visiting :)"
 
         elif (board[pos].name == 'Luxury Tax'):
-            Players[turn].worth-=75 # Need to check player's worth
-            board[freeParking].value+=75
+            try:
+                if(Players[turn].worth < 75):
+                    raise tooPoor
+                Players[turn].worth-=75 # Need to check player's worth
+                board[freeParking].worth+=75
+            except tooPoor:
+                actionsForPoor(75,Players[turn],"Free Parking",board,plyrDic,freeParking)            
 
         elif (board[pos].name == 'Go'):
             print "You landed on GO!"
