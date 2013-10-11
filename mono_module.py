@@ -123,7 +123,7 @@ def incomeTaxActions(player,board,freeParking):
             incomeTaxChoice='b'
 
 # Function to deal with Community Chest cards
-def comChestLogic(card,player,board,freeParking,Jail):
+def comChestLogic(card,player,board,freeParking,Jail,Players):
     print card # Debuggin
     pieces=card.split()
     # Take care of the easy situations first
@@ -138,8 +138,8 @@ def comChestLogic(card,player,board,freeParking,Jail):
 
                 player.worth-=pieces[1]
             except tooPoor:
-                print need to do stuff if poor 
-    elif(card == "get out of jail free")
+                print "need to do stuff if poor" 
+    elif(card == "get out of jail free"):
         player.getOutFree=True
     elif(pieces[0] == "advance"):
         if (pieces[3] == "Go"):
@@ -148,3 +148,9 @@ def comChestLogic(card,player,board,freeParking,Jail):
         else:
             player.position=Jail
             player.inJail=True
+    elif(pieces[4] == "player"):
+        player.worth+=(pieces[1]*len(Players))
+        for plry in Players:
+            plry.worth-=pieces[1]
+    else:
+        print "pay for houses"
