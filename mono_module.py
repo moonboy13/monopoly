@@ -163,7 +163,9 @@ def comChestLogic(card,player,board,freeParking,Jail,Players,plyrDic):
 def quitFunction(player):
     """This function destroys the player and returns their properites to the bank when they
        quit"""
-    for prop in player.properties.keys()
+    print player
+    print "Goodbye "+player.player
+    for prop in player.properties.keys():
         player.properties[prop].owner="Bank"
         player.properties[prop].nhouse=0
         player.properties[prop].hotel=False
@@ -214,7 +216,7 @@ def actionsForPoor(debt,player,debtor,board,plyrDic,freeParking):
                     # Now select the number of houses to remove
                     removalNumber=None
                     while not removalNumber:
-                        removalNumber=int(raw_input("How many houses to remove? ")
+                        removalNumber=int(raw_input("How many houses to remove? "))
                         if(removalNumber > player.properties[removalChoice].nHouses):
                             print "Removing all houses on "+removalChoice
                             removalNumber=player.properties[removalChoice].nHouses
@@ -238,18 +240,21 @@ def actionsForPoor(debt,player,debtor,board,plyrDic,freeParking):
                     if(not player.properties[propMorgage].hasHouses and 
                        not player.properties[propMorgage].morgaged ):
                         optionsMorgages.append(propMorgage)
-                        print propMorgage+" can be morgaged for $"+str(player.properties[propMorgage].morgageVal
+                        print propMorgage+" can be morgaged for $"+str(player.properties[propMorgage].morgageVal)
 
-                # Check that there really are morgageable properties
+                # Check that there really are morgageable properties and if there
+                # aren't any force the player to quite
                 if (len(optionsMorgages) == 0):
                     print "No properties can be morgaged"
+                    print "Sorry, you must quit"
+                    quitFunction(player)
+                    break
                 else:
                     # Get the player's choice in morgage
                     setOptionsMorgages=set(optionsMorgages)
                     morgageChoice=None
                     while not morgageChoice:
-                        morgageChoice=str(raw_input("Please enter EXACT name (case sensitive) of 
-                                                     the property to be morgaged: "))
+                        morgageChoice=str(raw_input("Please enter EXACT name (case sensitive) of the property to be morgaged: "))
                         if(not morgageChoice in setOptionsMorgages):
                             morgageChoice=None
                             print "Invalid property name"
@@ -263,3 +268,5 @@ def actionsForPoor(debt,player,debtor,board,plyrDic,freeParking):
                         remainingDebt=0
                     else:
                         remainingDebt-=player.properties[morgageChoice].morgageVale
+
+
