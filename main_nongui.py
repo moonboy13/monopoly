@@ -137,18 +137,20 @@ while PlayGame:
 
         elif (board[pos].name == 'Luxury Tax'):
             try:
+                board[freeParking].worth+=75
                 if(Players[turn].worth < 75):
                     raise tooPoor
                 Players[turn].worth-=75 # Need to check player's worth
-                board[freeParking].worth+=75
             except tooPoor:
-                actionsForPoor(75,Players[turn],"Free Parking",board,plyrDic,freeParking)            
+                actionsForPoor(75,Players[turn],board,plyrDic,freeParking)            
 
         elif (board[pos].name == 'Go'):
             print "You landed on GO!"
 
         else: 
-            print board[pos].owner
+            # Function for handeling what happens when a player lands on 
+            # a property
+            propertyActions(Players[turn],space,plyrDic,roll[0],board)r
     
     # Check if the player rolled doulbles
     if(not roll[1]):

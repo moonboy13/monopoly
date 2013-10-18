@@ -17,6 +17,8 @@ class Player:
         self.inJail=False
         self.jailCounter=0
         self.position=0
+        self.nRail=0
+        self.nUtil=0
 
 # Generic class for spaces
 class Space:
@@ -135,14 +137,14 @@ def comChestLogic(card,player,board,freeParking,Jail,Players,plyrDic):
         if(pieces[0] == "collect"):
             player.worth+=pieces[1]
         elif(pieces[0] == "pay"):
-            board[freeParking]+=pieces[1]
+            board[freeParking].worth+=pieces[1]
             try:
                 if (player.worth < pieces[1]):
                     raise tooPoor
 
                 player.worth-=pieces[1]
             except tooPoor:
-                actionsForPoor(pieces[1],player,"Free Parking",board,plyrDic,freeParking) 
+                actionsForPoor(pieces[1],player,board,plyrDic,freeParking) 
     elif(card == "get out of jail free"):
         player.getOutFree=True
     elif(pieces[0] == "advance"):
@@ -174,13 +176,7 @@ def quitFunction(player):
 
 
 # Function to deal with the poor
-def actionsForPoor(debt,player,debtor,board,plyrDic,freeParking):
-    # first determine who is getting payed
-    if (debtor == "Free Parking"):
-        board[freeParking].worth+=debt
-    else:
-        plyrDic[debtor].worth+=debt
-
+def actionsForPoor(debt,player,board,plyrDic,freeParking):
     # Figure out how to pay the debt
     remainingDebt=debt-player.worth
     player.worth=0
@@ -269,4 +265,61 @@ def actionsForPoor(debt,player,debtor,board,plyrDic,freeParking):
                     else:
                         remainingDebt-=player.properties[morgageChoice].morgageVale
 
+# Function to handle landing on a property
+def propertyActions(player,space,plyrDic,roll,board):
+    """This funciton handles the actions of what happens if a player lands on a property"""
+    # First check if the property is owned, if not check to see if the player can buy
+    # it.
+    if space.owner == "Bank":
+        if player.worth >= space.price:
+            buyChoice=str(raw_input("Would you like to purchase "+space.name+" for $"+\
+                                    str(space.price)+"[y/N]? "))
+            if buyChoice.lower() == 'y':
+                player.worth-=space.price
+                space.owner=player.player
+        else:
+            print "Sorry, your cash reserves of $"+str(player.worth)+\
+                  " is not enough to purchase this property."
+    else:
+        owner=plyrDic[space.owner]
+        if(space.group == 'rail'):
+            # Determine the rails rent
+            if(owner.nRail == 1):
+                rent=25
+            elif(owner.nRail == 2):
+                rent=50
+            elif(owner.nRail == 3):
+                rent=100
+            else:
+                rent=200
+        elif(space.group == 'utility'):
+            # Determine the utilities rent
+            if(owner.nUtil == 1):
+                rent=roll*4
+            else:
+                rent=roll*10
+        else:
+            # Determine the rent
+            if(space.hotel):
+                rent=space.hotelRent
+            elif(space.nhouse == 4):
+                rent=space.fourHouse
+            elif(space.nhouse == 3):
+                rent=space.threeHouse
+            elif(space.nhouse == 2):
+                rent=space.twoHouse
+            elif(space.nhouse == 1):
+                rent=space.oneHouse
+            else:
+                rent=space.rent
 
+        # Pay the owner
+        owner.worth+=rent
+        
+        # Check to see if the player can pay the rent
+        try:
+            if(player.worth < rent):
+                raise tooPoor
+            player.worth-=rent
+        except tooPoor:
+            actionsForPoor(rent,player,board,plyrDic,20)

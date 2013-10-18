@@ -1,8 +1,8 @@
-advance to go
+advance to Go
 collect 75
 pay 50
 get out of jail free
-go to jail
+advance to Jail
 collect 10 from each player
 collect 50 from each player
 collect 20

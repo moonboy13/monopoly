@@ -7,6 +7,7 @@ import random
 def makeBoard():
     propFile=open("textfiles/properties.txt",'r')
     lines=propFile.readlines()
+    propFile.close()
     lines=lines[1:]
     props=[]
     for line in lines:
@@ -30,6 +31,7 @@ def communityChest():
     """Read in and return the community chest deck"""
     comFile=open("textfiles/community_chest.txt",'r')
     lines=comFile.readlines()
+    comFile.close()
     comChest=list()
     for line in lines:
         line=line.strip()
@@ -43,6 +45,7 @@ def Chance():
     """Read in and return the chance deck"""
     chaFile=open("textfiles/chance.txt",'r')
     lines=chaFile.readlines()
+    chaFile.close()
     chance=list()
     for line in lines:
         line=line.strip()
