@@ -74,6 +74,7 @@ plyrDic={Players[0].player:Players[0]}
 for i in range(1,len(Players)-1):
     plyrDic[Players[i].player]=Players[i]
 
+print plyrDic
 # Begin Playing the game
 print "Beginning the game!"
 PlayGame=True
@@ -115,7 +116,7 @@ while PlayGame:
             comCard=comChest.pop(0)
             comChest.append(comCard)
             # Will add logic for cards later
-            comChestLogic(comCard,Players[turn],board,freeParking,Jail,Players,plyrDic)
+            comChestLogic(comCard,Players[turn],board,freeParking,jail,Players,plyrDic)
         
         elif (board[pos].name == 'Chance'):
             # Remove a card, then place it at the bottom
@@ -150,7 +151,7 @@ while PlayGame:
         else: 
             # Function for handeling what happens when a player lands on 
             # a property
-            propertyActions(Players[turn],space,plyrDic,roll[0],board)r
+            propertyActions(Players[turn],board[pos],plyrDic,roll[0],board)
     
     # Check if the player rolled doulbles
     if(not roll[1]):
@@ -169,8 +170,14 @@ while PlayGame:
     if(turn >= len(Players)):
         turn=0
 
+    # Condition to end the game
+    if(len(Players) == 1):
+        print Players[0].player+" has won the game!"
+        print "Thanks for playing!"
+
+    time.sleep(2)
 
     # Debugging to keep playing
-    keepRolling=str(raw_input("Keep rolling? "))
-    if (keepRolling.lower() == "n"):
-        PlayGame=False # Here during debug to stop execution
+    #keepRolling=str(raw_input("Keep rolling? "))
+    #if (keepRolling.lower() == "n"):
+    #    PlayGame=False # Here during debug to stop execution

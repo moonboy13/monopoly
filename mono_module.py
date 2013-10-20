@@ -35,18 +35,18 @@ class Property:
                  morgageValue,oneHouse,twoHouse,threeHouse,fourHouse,hotelRent):
         self.name=propertyName
         self.owner="Bank"
-        self.cost=propertyPrice
-        self.rent=propertyRent
-        self.buildCost=houseCost
+        self.cost=int(propertyPrice)
+        self.rent=int(propertyRent)
+        self.buildCost=int(houseCost)
         self.nhouse=0
         self.hotel=False
         self.group=propertyGroup
-        self.morgageVal=morgageValue
-        self.oneHouse=oneHouse
-        self.twoHouse=twoHouse
-        self.threeHouse=threeHouse
-        self.fourHouse=fourHouse
-        self.hotelRent=hotelRent
+        self.morgageVal=int(morgageValue)
+        self.oneHouse=int(oneHouse)
+        self.twoHouse=int(twoHouse)
+        self.threeHouse=int(threeHouse)
+        self.fourHouse=int(fourHouse)
+        self.hotelRent=int(hotelRent)
         self.morgaged=False
 
     def buildHotel(self):
@@ -135,16 +135,16 @@ def comChestLogic(card,player,board,freeParking,Jail,Players,plyrDic):
     # Take care of the easy situations first
     if (len(pieces) == 2):
         if(pieces[0] == "collect"):
-            player.worth+=pieces[1]
+            player.worth+=int(pieces[1])
         elif(pieces[0] == "pay"):
-            board[freeParking].worth+=pieces[1]
+            board[freeParking].worth+=int(pieces[1])
             try:
-                if (player.worth < pieces[1]):
+                if (player.worth < int(pieces[1])):
                     raise tooPoor
 
-                player.worth-=pieces[1]
+                player.worth-=int(pieces[1])
             except tooPoor:
-                actionsForPoor(pieces[1],player,board,plyrDic,freeParking) 
+                actionsForPoor(int(pieces[1]),player,board,plyrDic,freeParking) 
     elif(card == "get out of jail free"):
         player.getOutFree=True
     elif(pieces[0] == "advance"):
@@ -271,11 +271,11 @@ def propertyActions(player,space,plyrDic,roll,board):
     # First check if the property is owned, if not check to see if the player can buy
     # it.
     if space.owner == "Bank":
-        if player.worth >= space.price:
+        if player.worth >= space.cost:
             buyChoice=str(raw_input("Would you like to purchase "+space.name+" for $"+\
-                                    str(space.price)+"[y/N]? "))
+                                    str(space.cost)+"[y/N]? "))
             if buyChoice.lower() == 'y':
-                player.worth-=space.price
+                player.worth-=space.cost
                 space.owner=player.player
         else:
             print "Sorry, your cash reserves of $"+str(player.worth)+\
