@@ -71,10 +71,9 @@ for player in range(1,nPlayers+1):
 
 # Create a dictionary of players
 plyrDic={Players[0].player:Players[0]}
-for i in range(1,len(Players)-1):
+for i in range(len(Players)):
     plyrDic[Players[i].player]=Players[i]
 
-print plyrDic
 # Begin Playing the game
 print "Beginning the game!"
 PlayGame=True
@@ -88,6 +87,15 @@ turn=0 # whose turn in the player array it is
 while PlayGame:
     # Inform users whose turn it is
     print "It is "+Players[turn].player+"'s turn"
+    print Players[turn].player+" is worth $"+str(Players[turn].worth)
+    keys=Players[turn].properties.keys()
+    if len(keys) > 0:
+        print Players[turn].player+" owns:"
+        for key in keys:
+				    print Players[turn].properties[key].name
+
+    else:
+        print Players[turn].player+" owns no properties"
 
     # Roll Dice and advance player
     roll=rollDice()

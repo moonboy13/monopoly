@@ -155,7 +155,7 @@ def comChestLogic(card,player,board,freeParking,Jail,Players,plyrDic):
             player.position=Jail
             player.inJail=True
     elif(pieces[4] == "player"):
-        player.worth+=(pieces[1]*len(Players))
+        player.worth+=int(pieces[1]*len(Players))
         for plry in Players:
             plry.worth-=pieces[1]
     else:
@@ -275,8 +275,11 @@ def propertyActions(player,space,plyrDic,roll,board):
             buyChoice=str(raw_input("Would you like to purchase "+space.name+" for $"+\
                                     str(space.cost)+"[y/N]? "))
             if buyChoice.lower() == 'y':
+                print "You just bought "+space.name+" for $"+str(space.cost)
                 player.worth-=space.cost
                 space.owner=player.player
+                player.properties[space.name]=space
+
         else:
             print "Sorry, your cash reserves of $"+str(player.worth)+\
                   " is not enough to purchase this property."
@@ -314,6 +317,7 @@ def propertyActions(player,space,plyrDic,roll,board):
                 rent=space.rent
 
         # Pay the owner
+        print "Paying "+owner.player+" $"+str(rent)+" in rent."
         owner.worth+=rent
         
         # Check to see if the player can pay the rent

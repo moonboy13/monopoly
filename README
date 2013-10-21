@@ -15,5 +15,7 @@ most of the community chest cards and a function to deal with what happens when
 a player is too poor to pay a debt.
 
 Still cannont fully delete the reference to a player upon deletion even though
-their information is wiped. Need to add logic for Chance cards, what happens
-when a player lands on a space and the building of houses/hotels.
+their information is wiped. Need to add logic for Chance cards, building of 
+houses/hotels and trades.
+
+Debugging current code before programming in new logic
