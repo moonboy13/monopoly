@@ -2,6 +2,9 @@
 # This is a non gui interface to test out modules and game
 # techniques.
 
+# Import statements. The modules imported with the syntax
+# from <name> import * are my personal modules that are
+# contained in this same directory
 from mono_module import *
 from my_errs import *
 from initialize import *
@@ -9,6 +12,7 @@ import random,time
 
 ####
 
+# Roll the two dice and return the value + if the roll was a double.
 def rollDice():
     random.seed(time.time()) # use sys time at time of roll to seed random
     a=random.randint(1,6)
@@ -23,36 +27,50 @@ def rollDice():
 
 ####
 
-# Intialize the board
+# Intialize the board, these are definded in the initialize.py file
 board=makeBoard()
 chance=Chance()
 comChest=communityChest()
 
 ####
 nPlayers = None
+# Keep asking for input if there isn't a valid number of players 
+# provided
 while not nPlayers or nPlayers > 8:
     try:
+        # ask for, and wait for, user input.
         nPlayers=int(raw_input("Enter the number of players: "))
         if (nPlayers > 8):
+            # personal error definced in my_errs.py
             raise TooManyPlayers(nPlayers)
+    # Predefinced error provided by python
     except ValueError:
         print "Please enter an integer!"
+    # Catching my personal erry
     except TooManyPlayers as e:
         print e.nplayers+" is too many, please only use 8 or less."
 
+# Initializing an empty list
 Players=[]
+# Initializing a dictionary. A dictionary is a list using strings as the keys instead
+# of a number.
 tokens={"wheelbarrow": False,"battleship": False,"racecar": False,"thimble": False,
         "boot": False,"dog": False,"hat": False,"cat": False}
+# dictionary.keys() returns the keys of a dictionary
 valid=tokens.keys()
+# Creates a set of the keys
 validSet=set(valid)
 
 # Get player and piece info
 for player in range(1,nPlayers+1):
+    # no input checking, anything can be a players name
     name=str(raw_input("Please enter player "+str(player)+"'s name: "))
+    # start an instance of the Player class in mono_modules.py
     cur=Player(name)
     piece=None
     while not piece:
         piece=str(raw_input("Please enter player "+str(player)+"'s piece: "))
+        # make the input lowercase and check to see if it is an available piece
         piece=piece.lower()
         if (not piece in validSet):
             piece=None
@@ -85,7 +103,7 @@ cntDoubles=0
 turn=0 # whose turn in the player array it is
 # Continue playing while people want to play
 while PlayGame:
-    # Inform users whose turn it is
+    # Inform users whose turn it is and print some information on them
     print "It is "+Players[turn].player+"'s turn"
     print Players[turn].player+" is worth $"+str(Players[turn].worth)
     keys=Players[turn].properties.keys()
@@ -119,18 +137,20 @@ while PlayGame:
         # Actions for spaces that can be landed on
         if (board[pos].name == "Income Tax"):
             incomeTaxActions(Players[turn],board,freeParking) 
+
         elif (board[pos].name == 'Community Chest'):
             # Remove a card, then place it at the bottom
             comCard=comChest.pop(0)
             comChest.append(comCard)
-            # Will add logic for cards later
+            # Function with logice for card is in mono_module.py
             comChestLogic(comCard,Players[turn],board,freeParking,jail,Players,plyrDic)
-        
+
         elif (board[pos].name == 'Chance'):
             # Remove a card, then place it at the bottom
             chaCard=chance.pop(0)
             chance.append(chaCard)
             # Will add logic for cards later
+            chanceLogic(chaCard,Players[turn],board,freeParking,jail,Players,plyrDic)
 
         elif (board[pos].name == 'Free Parking'):
             print "You collect $"+str(board[freeParking].worth)
@@ -183,6 +203,7 @@ while PlayGame:
         print Players[0].player+" has won the game!"
         print "Thanks for playing!"
 
+    # Wait two second before making next roll
     time.sleep(2)
 
     # Debugging to keep playing

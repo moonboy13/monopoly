@@ -128,6 +128,42 @@ def incomeTaxActions(player,board,freeParking):
             player.worth-=200
             incomeTaxChoice='b'
 
+# Function for the Chance cards
+def chanceLogic(card,player,board,freeParking,Jail,Players,plyrDic):
+    print car # Debuggin
+    # split the card into separate words
+    pieces=card.split()
+    # simple cases first
+    if (len(pieces) == 2):
+        if(pieces[0] == "collect"):
+            player.worth+=int(pieces[1])
+        else:
+            board[freeParking].worth+=pieces[1]
+            try:
+                if(pieces[1] > player.worth):
+                    raise tooPoor
+
+                player.worth-=int(pieces[1])
+            except tooPoor:
+                actionsForPoor(int(pieces[1]),player,board,plyrDic,freeParking)
+    elif(card == "get out of jail free"):
+        player.getOutFree=True
+    # paying each player $50
+    elif(pieces[4] == "player"):
+        debt=len(Players)*int(pieces[1])
+        for person in Players:
+            person.worth+=int(pieces[1])
+
+        try:
+            if(player.worth < debt):
+                raise tooPoor
+
+            player.worth-=debt
+        except tooPoor:
+            actionsForPoor(debt,player,board,plyrDic,freeParking)
+    # Advance to a specific space
+    if(pieces[0] == "advance" and len(pieces) <5):
+
 # Function to deal with Community Chest cards
 def comChestLogic(card,player,board,freeParking,Jail,Players,plyrDic):
     print card # Debuggin
