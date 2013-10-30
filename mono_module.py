@@ -64,6 +64,7 @@ def jailActions(player,turn,board,roll,freeParking):
         if(use == 'n'):
             print "okay..."
         else:
+            player.inJail=False
             return turn 
     # See if player can pay to leave jail
     if(player.worth < 50):
@@ -139,7 +140,7 @@ def chanceLogic(card,player,board,freeParking,Jail,Players,plyrDic):
         if(pieces[0] == "collect"):
             player.worth+=int(pieces[1])
         else:
-            board[freeParking].worth+=pieces[1]
+            board[freeParking].worth+=int(pieces[1])
             try:
                 if(pieces[1] > player.worth):
                     raise tooPoor
@@ -149,19 +150,6 @@ def chanceLogic(card,player,board,freeParking,Jail,Players,plyrDic):
                 actionsForPoor(int(pieces[1]),player,board,plyrDic,freeParking)
     elif(card == "get out of jail free"):
         player.getOutFree=True
-    # paying each player $50
-    elif(pieces[4] == "player"):
-        debt=len(Players)*int(pieces[1])
-        for person in Players:
-            person.worth+=int(pieces[1])
-
-        try:
-            if(player.worth < debt):
-                raise tooPoor
-
-            player.worth-=debt
-        except tooPoor:
-            actionsForPoor(debt,player,board,plyrDic,freeParking)
     # Advance to a specific space
     elif(pieces[0] == "advance" ):
         # GO
@@ -209,6 +197,19 @@ def chanceLogic(card,player,board,freeParking,Jail,Players,plyrDic):
         elif(pieces[2] == "Boardwalk"):
             player.position=39
             propertyActions(player,board[39],plyrDic,0,board,False)
+    # paying each player $50
+    elif(pieces[4] == "player"):
+        debt=len(Players)*int(pieces[1])
+        for person in Players:
+            person.worth+=int(pieces[1])
+
+        try:
+            if(player.worth < debt):
+                raise tooPoor
+
+            player.worth-=debt
+        except tooPoor:
+            actionsForPoor(debt,player,board,plyrDic,freeParking)
     else:
         print "Stuff with paying for houses and hotels"
 
@@ -232,7 +233,7 @@ def comChestLogic(card,player,board,freeParking,Jail,Players,plyrDic):
     elif(card == "get out of jail free"):
         player.getOutFree=True
     elif(pieces[0] == "advance"):
-        if (pieces[3] == "Go"):
+        if (pieces[2] == "Go"):
             player.position=0
             player.worth+=200
         else:
@@ -265,7 +266,7 @@ def actionsForPoor(debt,player,board,plyrDic,freeParking):
     remainingDebt=debt-player.worth
     player.worth=0
     # Ask the player if they want to quit
-    quit=str(raw_input("Do you want to quit[y/N]?"))
+    quit=str(raw_input(player.player+", do you want to quit[y/N]?"))
     if(quit == 'y'):
         quitFunction(player)
     else:
@@ -371,6 +372,8 @@ def propertyActions(player,space,plyrDic,roll,board,chance):
         else:
             print "Sorry, your cash reserves of $"+str(player.worth)+\
                   " is not enough to purchase this property."
+    elif space.owner == player.player:
+        print "Landed on your own space!"
     else:
         owner=plyrDic[space.owner]
         if(space.group == 'rail'):
