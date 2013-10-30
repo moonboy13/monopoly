@@ -2,6 +2,7 @@
 # module for monopoly
 
 from my_errs import *
+import random, time
 
 # Definining a class for Pieces
 class Player:
@@ -130,7 +131,7 @@ def incomeTaxActions(player,board,freeParking):
 
 # Function for the Chance cards
 def chanceLogic(card,player,board,freeParking,Jail,Players,plyrDic):
-    print car # Debuggin
+    print card # Debuggin
     # split the card into separate words
     pieces=card.split()
     # simple cases first
@@ -162,7 +163,54 @@ def chanceLogic(card,player,board,freeParking,Jail,Players,plyrDic):
         except tooPoor:
             actionsForPoor(debt,player,board,plyrDic,freeParking)
     # Advance to a specific space
-    if(pieces[0] == "advance" and len(pieces) <5):
+    elif(pieces[0] == "advance" ):
+        # GO
+        if(pieces[2] == "Go"):
+            player.position=0
+            player.worth+=200
+        # Illinois Ave
+        elif(pieces[2] == "Illinois"):
+            # Check to see if the player passes by Go
+            if (player.position > 24):
+                player.worth+=200
+
+            player.position=24
+            propertyActions(player,board[24],plyrDic,0,board,False)
+        # Nearest Utility
+        elif(pieces[3] == "utility"):
+            while board[player.position].group != "utility":
+                player.position+=1
+            # Re-roll
+            random.seed(time.time())
+            roll=random.randint(1,6)+random.randint(1,6)
+            propertyActions(player,board[player.position],plyrDic,roll,board,True)
+        # Nearest Rail
+        elif(pieces[3] == "railroad"):
+            while board[player.position].group != "rail":
+                player.position+=1
+            
+            propetyActions(player,board[player.position],plyrDic,0,board,True)
+        # Go back 3 spaces(will never cause you to got over go)
+        elif(pieces[2] == 3):
+            print "going back 3 spaces plays hell with me"
+        # Go to jail
+        elif(pieces[2] == "jail"):
+            player.position=10
+            player.inJail=True
+        # Go to Reading Rail
+        elif(pieces[2] == "Reading"):
+            # Check to see if the player passes by Go
+            if (player.position > 5):
+                player.worth+=200
+
+            player.position=5
+            propertyActions(player,board[5],plyrDic,0,board,False)
+        # Go to Boardwalk (note player cannot pass go)
+        elif(pieces[2] == "Boardwalk"):
+            player.position=39
+            propertyActions(player,board[39],plyrDic,0,board,False)
+    else:
+        print "Stuff with paying for houses and hotels"
 
 # Function to deal with Community Chest cards
 def comChestLogic(card,player,board,freeParking,Jail,Players,plyrDic):
@@ -193,7 +241,7 @@ def comChestLogic(card,player,board,freeParking,Jail,Players,plyrDic):
     elif(pieces[4] == "player"):
         player.worth+=int(pieces[1]*len(Players))
         for plry in Players:
-            plry.worth-=pieces[1]
+            plry.worth-=int(pieces[1])
     else:
         print "pay for houses"
 
@@ -302,7 +350,7 @@ def actionsForPoor(debt,player,board,plyrDic,freeParking):
                         remainingDebt-=player.properties[morgageChoice].morgageVale
 
 # Function to handle landing on a property
-def propertyActions(player,space,plyrDic,roll,board):
+def propertyActions(player,space,plyrDic,roll,board,chance):
     """This funciton handles the actions of what happens if a player lands on a property"""
     # First check if the property is owned, if not check to see if the player can buy
     # it.
@@ -315,6 +363,10 @@ def propertyActions(player,space,plyrDic,roll,board):
                 player.worth-=space.cost
                 space.owner=player.player
                 player.properties[space.name]=space
+                if(space.group == "rail"):
+                    player.nRail+=1
+                elif(space.group == "util"):
+                    player.nUtil+=1
 
         else:
             print "Sorry, your cash reserves of $"+str(player.worth)+\
@@ -331,12 +383,16 @@ def propertyActions(player,space,plyrDic,roll,board):
                 rent=100
             else:
                 rent=200
+            
+            if(chance):
+                rent*=2
+
         elif(space.group == 'utility'):
             # Determine the utilities rent
-            if(owner.nUtil == 1):
-                rent=roll*4
-            else:
+            if(owner.nUtil == 2 or chance):
                 rent=roll*10
+            else:
+                rent=roll*4
         else:
             # Determine the rent
             if(space.hotel):
@@ -352,14 +408,18 @@ def propertyActions(player,space,plyrDic,roll,board):
             else:
                 rent=space.rent
 
-        # Pay the owner
-        print "Paying "+owner.player+" $"+str(rent)+" in rent."
-        owner.worth+=rent
+        # Check to see if the owner is in jail before trying to pay rent
+        if(owner.inJail):
+            print owner.player+" is in Jail and cannot collect rent!"
+        else:
+            # Pay the owner
+            print "Paying "+owner.player+" $"+str(rent)+" in rent."
+            owner.worth+=rent
         
-        # Check to see if the player can pay the rent
-        try:
-            if(player.worth < rent):
-                raise tooPoor
-            player.worth-=rent
-        except tooPoor:
-            actionsForPoor(rent,player,board,plyrDic,20)
+            # Check to see if the player can pay the rent
+            try:
+                if(player.worth < rent):
+                    raise tooPoor
+                player.worth-=rent
+            except tooPoor:
+                actionsForPoor(rent,player,board,plyrDic,20)

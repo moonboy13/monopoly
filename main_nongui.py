@@ -104,7 +104,7 @@ turn=0 # whose turn in the player array it is
 # Continue playing while people want to play
 while PlayGame:
     # Inform users whose turn it is and print some information on them
-    print "It is "+Players[turn].player+"'s turn"
+    print "\nIt is "+Players[turn].player+"'s turn"
     print Players[turn].player+" is worth $"+str(Players[turn].worth)
     keys=Players[turn].properties.keys()
     if len(keys) > 0:
@@ -114,6 +114,8 @@ while PlayGame:
 
     else:
         print Players[turn].player+" owns no properties"
+
+    print "\n"
 
     # Roll Dice and advance player
     roll=rollDice()
@@ -179,7 +181,7 @@ while PlayGame:
         else: 
             # Function for handeling what happens when a player lands on 
             # a property
-            propertyActions(Players[turn],board[pos],plyrDic,roll[0],board)
+            propertyActions(Players[turn],board[pos],plyrDic,roll[0],board,False)
     
     # Check if the player rolled doulbles
     if(not roll[1]):
