@@ -123,7 +123,8 @@ while PlayGame:
     # Check to see if the player is in jail first
     if (Players[turn].inJail):
         print "You are in Jail!!"
-        turn=jailActions(Players[turn],turn,board,roll,freeParking)
+        jailActions(Players[turn],board,roll,freeParking)
+        next
     else:
         # Advance the player
         Players[turn].position+=roll[0]
@@ -183,6 +184,13 @@ while PlayGame:
             # a property
             propertyActions(Players[turn],board[pos],plyrDic,roll[0],board,False)
     
+
+    # Check to see if the player quit
+    if(Players[turn].isQuitting):
+        print "Goodbye "+Players[turn].player
+        del plyrDic[Players[turn].player]
+        del Players[turn]
+
     # Check if the player rolled doulbles
     if(not roll[1]):
         turn+=1    

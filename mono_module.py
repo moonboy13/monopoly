@@ -20,6 +20,7 @@ class Player:
         self.position=0
         self.nRail=0
         self.nUtil=0
+        self.isQuitting=False
 
 # Generic class for spaces
 class Space:
@@ -57,7 +58,7 @@ class Property:
             self.hotel=True
 
 # Function for dealing with options in jail
-def jailActions(player,turn,board,roll,freeParking):
+def jailActions(player,board,roll,freeParking):
     # See if the player has a get out of jail free card
     if(player.getOutFree):
         use=str(raw_input("Use your get out of jail free card[Y/n]? "))
@@ -65,7 +66,8 @@ def jailActions(player,turn,board,roll,freeParking):
             print "okay..."
         else:
             player.inJail=False
-            return turn 
+            exit()
+             
     # See if player can pay to leave jail
     if(player.worth < 50):
         print "Too poor to post bail!"
@@ -74,7 +76,6 @@ def jailActions(player,turn,board,roll,freeParking):
             print "You rolled doubles!"
             player.inJail=False
             player.jailCounter=0
-            turn+=1
         else:
             print "No luck!"
             player.jailCounter+=1
@@ -98,7 +99,6 @@ def jailActions(player,turn,board,roll,freeParking):
                 print "You rolled doubles!"
                 player.inJail=False
                 player.jailCounter=0
-                turn+=1
             else:
                 print "No luck!"
                 player.jailCounter+=1
@@ -110,7 +110,6 @@ def jailActions(player,turn,board,roll,freeParking):
 
 
 
-    return turn
 
 # Actions for landing on the income tax space
 def incomeTaxActions(player,board,freeParking):
@@ -121,8 +120,8 @@ def incomeTaxActions(player,board,freeParking):
                            str(player.worth)+") or [b]pay $200: "))
         if(temp == 'a'):
             print "Paying 10%"
-            board[freeParking].worth+=(0.1*player.worth)
-            player.worth-=(0.1*player.worth)
+            board[freeParking].worth+=int(0.1*player.worth)
+            player.worth-=int(0.1*player.worth)
             incomeTaxChoice='a'
         else:
             print "Paying $200"
@@ -142,7 +141,7 @@ def chanceLogic(card,player,board,freeParking,Jail,Players,plyrDic):
         else:
             board[freeParking].worth+=int(pieces[1])
             try:
-                if(pieces[1] > player.worth):
+                if(int(pieces[1]) > player.worth):
                     raise tooPoor
 
                 player.worth-=int(pieces[1])
@@ -164,20 +163,6 @@ def chanceLogic(card,player,board,freeParking,Jail,Players,plyrDic):
 
             player.position=24
             propertyActions(player,board[24],plyrDic,0,board,False)
-        # Nearest Utility
-        elif(pieces[3] == "utility"):
-            while board[player.position].group != "utility":
-                player.position+=1
-            # Re-roll
-            random.seed(time.time())
-            roll=random.randint(1,6)+random.randint(1,6)
-            propertyActions(player,board[player.position],plyrDic,roll,board,True)
-        # Nearest Rail
-        elif(pieces[3] == "railroad"):
-            while board[player.position].group != "rail":
-                player.position+=1
-            
-            propetyActions(player,board[player.position],plyrDic,0,board,True)
         # Go back 3 spaces(will never cause you to got over go)
         elif(pieces[2] == 3):
             print "going back 3 spaces plays hell with me"
@@ -197,6 +182,21 @@ def chanceLogic(card,player,board,freeParking,Jail,Players,plyrDic):
         elif(pieces[2] == "Boardwalk"):
             player.position=39
             propertyActions(player,board[39],plyrDic,0,board,False)
+        # Nearest Utility
+        elif(pieces[3] == "utility"):
+            while board[player.position].group != "utility":
+                player.position+=1
+            # Re-roll
+            random.seed(time.time())
+            roll=random.randint(1,6)+random.randint(1,6)
+            propertyActions(player,board[player.position],plyrDic,roll,board,True)
+        # Nearest Rail
+        elif(pieces[3] == "railroad"):
+            while board[player.position].group != "rail":
+                player.position+=1
+            
+            propetyActions(player,board[player.position],plyrDic,0,board,True)
+
     # paying each player $50
     elif(pieces[4] == "player"):
         debt=len(Players)*int(pieces[1])
@@ -256,8 +256,7 @@ def quitFunction(player):
         player.properties[prop].owner="Bank"
         player.properties[prop].nhouse=0
         player.properties[prop].hotel=False
-
-    del player
+        player.isQuitting=True
 
 
 # Function to deal with the poor
@@ -266,8 +265,10 @@ def actionsForPoor(debt,player,board,plyrDic,freeParking):
     remainingDebt=debt-player.worth
     player.worth=0
     # Ask the player if they want to quit
+    print player.player+" your remaining debt is $"+str(remainingDebt)
     quit=str(raw_input(player.player+", do you want to quit[y/N]?"))
     if(quit == 'y'):
+        print "Okay, you can quit"
         quitFunction(player)
     else:
         while remainingDebt > 0:
