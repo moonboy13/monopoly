@@ -3,14 +3,12 @@
 # Opening screen. Display buttons to start the game
 # and monopoly logo
 
-import pdb
+# Common modules
+from subprocess import call
 
 # Image modules
-#from Tkinter import Tk, RIGHT, BOTH, RAISED, Label
 from PIL import Image, ImageTk
-#from ttk import Frame, Button, Style
 import Tkinter as Tk
-#import PIL as P
 import ttk
 
 # Personal modules
@@ -68,11 +66,10 @@ class startMenu(Tk.Frame):
     def startClick(self,root):
         # Start the player selection menu
         root.withdraw()
-        # For development
-        print "Too Come"
-        exit()
-        #call("player_select.py")
 
-root=Tk.Tk()
-game=startMenu(root)
-root.mainloop()
+
+# Main execution loop
+def main():
+    root=Tk.Tk()
+    game=startMenu(root)
+    root.mainloop()
