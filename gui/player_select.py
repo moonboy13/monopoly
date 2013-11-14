@@ -81,6 +81,6 @@ class nPlayersScreen(Tk.Frame):
         y=(sh-HEIGHT)/2
         self.parent.geometry('%dx%d+%d+%d' % (WIDTH, HEIGHT, x, y))
 
-root=Tk.Tk()
-plyrSelect=nPlayersScreen(root)
-root.mainloop()
+#root=Tk.Tk()
+#plyrSelect=nPlayersScreen(root)
+#root.mainloop()

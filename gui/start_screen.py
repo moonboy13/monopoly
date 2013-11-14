@@ -3,8 +3,6 @@
 # Opening screen. Display buttons to start the game
 # and monopoly logo
 
-# Common modules
-from subprocess import call
 
 # Image modules
 from PIL import Image, ImageTk
@@ -12,6 +10,7 @@ import Tkinter as Tk
 import ttk
 
 # Personal modules
+import player_select as PS
 from strings import *
 
 # Initialize string class
@@ -66,10 +65,7 @@ class startMenu(Tk.Frame):
     def startClick(self,root):
         # Start the player selection menu
         root.withdraw()
-
-
-# Main execution loop
-def main():
-    root=Tk.Tk()
-    game=startMenu(root)
-    root.mainloop()
+        plrSelRoot=Tk.Toplevel()
+        plrWin=PS.nPlayersScreen(plrSelRoot)
+        plrSelRoot.mainloop()
+        root.deiconify()
