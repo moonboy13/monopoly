@@ -26,7 +26,6 @@ class startMenu(Tk.Frame):
     # Center the window
     def centerWindow(self):
         w, h=self.image.size
-        #w, h=(350, 300)
         h+=50
         sw=self.parent.winfo_screenwidth()
         sh=self.parent.winfo_screenheight()

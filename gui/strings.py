@@ -24,3 +24,12 @@ class selectStrings():
         self.sliderText="How many players?"
         self.ok="OK"
         self.cancel="Cancel"
+
+# Player info strings
+class infoStrings():
+    def __init__(self):
+        self.title="Player Information"
+        self.name="Player Name?"
+        self.pieces="Which piece would you like?"
+        self.confirm="Confirm"
+        self.cancel="Cancel"
