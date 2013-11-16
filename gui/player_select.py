@@ -9,8 +9,8 @@ import ttk
 
 # My modules
 import player_info as PI
-from strings import *
-from constants import *
+from strings import univStrings, selectStrings
+from constants import nPlayersCnsts
 
 # String references
 glbStrings=univStrings()
@@ -69,11 +69,12 @@ class nPlayersScreen(Tk.Frame):
     # Handle clicking OK
     def onOK(self):
         nPlayers=self.nPlayersDisplay.get()
-        print "OK!"
-        #infoRoot=Tk.Toplevel()
-        #self.parent.withdraw()
-        #plyrInfoRef=playerInfo(self,nPlayers)
-        #infoRoot.mainloop()
+        infoRoot=Tk.Toplevel()
+        self.parent.withdraw()
+        plyrInfoRef=PI.playerInfo(infoRoot,nPlayers)
+        infoRoot.mainloop()
+        infoRoot.destroy()
+        self.parent.deiconify()
         
 
     # Center the window

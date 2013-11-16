@@ -11,7 +11,7 @@ import ttk
 
 # Personal modules
 import player_select as PS
-from strings import *
+from strings import univStrings, startStrings
 
 # Initialize string class
 glbStrings=univStrings()
@@ -67,4 +67,5 @@ class startMenu(Tk.Frame):
         plrSelRoot=Tk.Toplevel()
         plrWin=PS.nPlayersScreen(plrSelRoot)
         plrSelRoot.mainloop()
+        plrSelRoot.destroy()
         root.deiconify()
