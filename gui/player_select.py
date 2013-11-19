@@ -2,6 +2,7 @@
 
 # Window to handle the selection of players and their pieces
 
+
 # Imaging Imports
 from PIL import Image, ImageTk
 import Tkinter as Tk

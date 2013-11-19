@@ -38,7 +38,6 @@ class playerInfo(Tk.Frame):
         self.pack(fill=Tk.BOTH,expand=1)
         self.frame=ttk.Frame(self,relief=Tk.RAISED,borderwidth=CONSTANTS.BORDER_WIDTH)
         self.frame.pack(fill=Tk.BOTH,expand=1)
-        self.centerWindow()
 
         # Name input instructions and field
         self.nameInstructions=Tk.StringVar()
@@ -135,10 +134,10 @@ class playerInfo(Tk.Frame):
         self.row=3
         self.column=0
         for i in range(CONSTANTS.N_BUTTONS):
+            print i
             if globalVars.avaliablePieces[i]:
                 self.imgNameLabels[i].grid(row=self.row,column=self.column)
                 self.radioButtons[i].grid(row=(self.row+1),column=self.column)
-                globalVars.avaliablePieces[i]=False
                 if self.column == 2:
                     self.row+=2
                     self.column=0
@@ -150,6 +149,9 @@ class playerInfo(Tk.Frame):
         self.okButton.grid(row=(self.row+1),column=0)
         self.cancelButton=ttk.Button(self.frame,text=strings.cancel,command=self.quit)
         self.cancelButton.grid(row=(self.row+1),column=2)
+
+
+        self.centerWindow()
 
     # Confirm Function
     def confirm(self):
