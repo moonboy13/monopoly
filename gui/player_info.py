@@ -27,8 +27,7 @@ class playerInfo(Tk.Frame):
         self.parent=parent
         self.nPlayers=nPlayers
         # Do this once for each player
-        for i in range(self.nPlayers):
-            self.initUI()
+        self.initUI()
 
     def initUI(self):
         # Basic window setup
@@ -117,7 +116,7 @@ class playerInfo(Tk.Frame):
         self.nineButton=Tk.Radiobutton(self.frame,image=self.imgNine,variable=self.plyrPiece,
                                        value=self.imgNineName)
  
-        # Lists of button and name references
+        # Tuples of button and name references
         self.radioButtons=(self.oneButton,self.twoButton,self.threeButton,self.fourButton,
                            self.fiveButton,self.sixButton,self.sevenButton,self.eightButton,
                            self.nineButton)
@@ -131,10 +130,11 @@ class playerInfo(Tk.Frame):
         self.buttonInstructionsLabel=ttk.Label(self.frame,text=0,
                                                textvariable=self.buttonInstructions)
         self.buttonInstructionsLabel.grid(row=2,columnspan=3)
+        
+        # Currently does not work
         self.row=3
         self.column=0
         for i in range(CONSTANTS.N_BUTTONS):
-            print i
             if globalVars.avaliablePieces[i]:
                 self.imgNameLabels[i].grid(row=self.row,column=self.column)
                 self.radioButtons[i].grid(row=(self.row+1),column=self.column)
@@ -150,7 +150,6 @@ class playerInfo(Tk.Frame):
         self.cancelButton=ttk.Button(self.frame,text=strings.cancel,command=self.quit)
         self.cancelButton.grid(row=(self.row+1),column=2)
 
-
         self.centerWindow()
 
     # Confirm Function
@@ -161,11 +160,12 @@ class playerInfo(Tk.Frame):
 
     # Center the window
     def centerWindow(self):
-        w=self.parent.winfo_width()
-        h=self.parent.winfo_height()
+        #w=self.parent.winfo_width()
+        #h=self.parent.winfo_height()
         sw=self.parent.winfo_screenwidth()
         sh=self.parent.winfo_screenheight()
 
-        x=(w-sw)/2
-        y=(h-sh)/2
-        self.parent.geometry('%dx%d+%d+%d' % (w, h, sw, sh))
+
+        x=(CONSTANTS.WIDTH-sw)/2
+        y=(CONSTANTS.HEIGHT-sh)/2
+        self.parent.geometry('%dx%d+%d+%d' % (CONSTANTS.WIDTH, CONSTANTS.HEIGHT, sw, sh))

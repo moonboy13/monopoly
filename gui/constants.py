@@ -26,7 +26,7 @@ class nPlayersCnsts():
 # Player information constants
 class playerInfoCnsts():
     def __init__(self):
-        #self.WIDTH=500
-        #self.HEIGHT=500
+        self.WIDTH=500
+        self.HEIGHT=500
         self.BORDER_WIDTH=5
         self.N_BUTTONS=9
