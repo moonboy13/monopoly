@@ -42,11 +42,13 @@ class playerInfo(Tk.Frame):
         self.nameInstructions=Tk.StringVar()
         self.nameInstructions.set(strings.name)
         self.nameInstructionsLabel=ttk.Label(self.frame,text=0,textvariable=self.nameInstructions)
-        self.nameInstructionsLabel.grid(row=0,columnspan=3)
+        #self.nameInstructionsLabel.grid(row=0,columnspan=3)
+        self.nameInstructionsLabel.pack()
         self.plyrName=Tk.StringVar()
         self.plyrName.set('')
         self.nameEntry=ttk.Entry(self,textvariable=self.plyrName)
-        self.nameEntry.grid(row=1,columnspan=2,sticky=Tk.W+Tk.E)
+        #self.nameEntry.grid(row=1,columnspan=2,sticky=Tk.W+Tk.E)
+        self.nameEntry.pack()
 
         # Get image references for all of the piece icons
         self.imgOneFile=Image.open(pieceStrings.pieceOneImg)
@@ -99,22 +101,31 @@ class playerInfo(Tk.Frame):
         self.plyrPiece=Tk.StringVar()
         self.oneButton=Tk.Radiobutton(self.frame,image=self.imgOne,variable=self.plyrPiece,
                                       value=self.imgOneName)
+        self.oneButton.pack()
         self.twoButton=Tk.Radiobutton(self.frame,image=self.imgTwo,variable=self.plyrPiece,
                                       value=self.imgOneName)
+        self.twoButton.pack()
         self.threeButton=Tk.Radiobutton(self.frame,image=self.imgThree,variable=self.plyrPiece,
                                         value=self.imgThreeName)
+        self.threeButton.pack()
         self.fourButton=Tk.Radiobutton(self.frame,image=self.imgFour,variable=self.plyrPiece,
                                        value=self.imgFourName)
+        self.fourButton.pack()
         self.fiveButton=Tk.Radiobutton(self.frame,image=self.imgFive,variable=self.plyrPiece,
                                        value=self.imgFiveName)
+        self.fiveButton.pack()
         self.sixButton=Tk.Radiobutton(self.frame,image=self.imgSix,variable=self.plyrPiece,
                                       value=self.imgSixName)
+        self.sixButton.pack()
         self.sevenButton=Tk.Radiobutton(self.frame,image=self.imgSeven,variable=self.plyrPiece,
                                         value=self.imgSevenName)
+        self.sevenButton.pack()
         self.eightButton=Tk.Radiobutton(self.frame,image=self.imgEight,variable=self.plyrPiece,
                                         value=self.imgEightName)
+        self.eightButton.pack()
         self.nineButton=Tk.Radiobutton(self.frame,image=self.imgNine,variable=self.plyrPiece,
                                        value=self.imgNineName)
+        self.nineButton.pack()
  
         # Tuples of button and name references
         self.radioButtons=(self.oneButton,self.twoButton,self.threeButton,self.fourButton,
@@ -129,26 +140,29 @@ class playerInfo(Tk.Frame):
         self.buttonInstructions.set(strings.pieces)
         self.buttonInstructionsLabel=ttk.Label(self.frame,text=0,
                                                textvariable=self.buttonInstructions)
-        self.buttonInstructionsLabel.grid(row=2,columnspan=3)
+        #self.buttonInstructionsLabel.grid(row=2,columnspan=3)
+        self.buttonInstructionsLabel.pack()
         
         # Currently does not work
         self.row=3
         self.column=0
-        for i in range(CONSTANTS.N_BUTTONS):
-            if globalVars.avaliablePieces[i]:
-                self.imgNameLabels[i].grid(row=self.row,column=self.column)
-                self.radioButtons[i].grid(row=(self.row+1),column=self.column)
-                if self.column == 2:
-                    self.row+=2
-                    self.column=0
-                else: 
-                    self.column+=1
+        #for i in range(CONSTANTS.N_BUTTONS):
+        #    if globalVars.avaliablePieces[i]:
+        #        self.imgNameLabels[i].grid(row=self.row,column=self.column)
+        #        self.radioButtons[i].grid(row=(self.row+1),column=self.column)
+        #        if self.column == 2:
+        #            self.row+=2
+        #            self.column=0
+        #        else: 
+        #            self.column+=1
 
         # Create the confirm and cancel buttons
         self.okButton=ttk.Button(self.frame,text=strings.confirm,command=self.confirm)
-        self.okButton.grid(row=(self.row+1),column=0)
+        self.okButton.pack()
+        #self.okButton.grid(row=(self.row+1),column=0)
         self.cancelButton=ttk.Button(self.frame,text=strings.cancel,command=self.quit)
-        self.cancelButton.grid(row=(self.row+1),column=2)
+        self.cancelButton.pack()
+        #self.cancelButton.grid(row=(self.row+1),column=2)
 
         self.centerWindow()
 
